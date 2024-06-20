@@ -3,6 +3,7 @@ import { PropertyModule } from "./property/property.module";
 import { TransactionModule } from "./transaction/transaction.module";
 import { BookingModule } from "./booking/booking.module";
 import { UserModule } from "./user/user.module";
+import { PaymentModule } from "./payment/payment.module";
 import { HealthModule } from "./health/health.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { SecretsManagerModule } from "./providers/secrets/secretsManager.module";
@@ -24,6 +25,7 @@ import { AuthModule } from "./auth/auth.module";
     TransactionModule,
     BookingModule,
     UserModule,
+    PaymentModule,
     HealthModule,
     PrismaModule,
     SecretsManagerModule,

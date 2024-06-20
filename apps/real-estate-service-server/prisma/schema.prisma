@@ -1,5 +1,5 @@
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DB_URL")
 }
 
@@ -14,7 +14,7 @@ model Property {
   city          String?
   createdAt     DateTime               @default(now())
   description   String?
-  id            String                 @id @default(cuid())
+  id            String                 @id @default(auto()) @map("_id") @db.ObjectId
   price         Float?
   state         String?
   title         String?
@@ -28,26 +28,26 @@ model Transaction {
   amount     Float?
   createdAt  DateTime               @default(now())
   date       DateTime?
-  id         String                 @id @default(cuid())
+  id         String                 @id @default(auto()) @map("_id") @db.ObjectId
   property   Property?              @relation(fields: [propertyId], references: [id])
-  propertyId String?
+  propertyId String?                @db.ObjectId
   status     EnumTransactionStatus?
   updatedAt  DateTime               @updatedAt
   user       User?                  @relation(fields: [userId], references: [id])
-  userId     String?
+  userId     String?                @db.ObjectId
 }
 
 model Booking {
   createdAt  DateTime           @default(now())
   endDate    DateTime?
-  id         String             @id @default(cuid())
+  id         String             @id @default(auto()) @map("_id") @db.ObjectId
   property   Property?          @relation(fields: [propertyId], references: [id])
-  propertyId String?
+  propertyId String?            @db.ObjectId
   startDate  DateTime?
   status     EnumBookingStatus?
   updatedAt  DateTime           @updatedAt
   user       User?              @relation(fields: [userId], references: [id])
-  userId     String?
+  userId     String?            @db.ObjectId
 }
 
 model User {
@@ -55,13 +55,24 @@ model User {
   createdAt    DateTime      @default(now())
   email        String?       @unique
   firstName    String?
-  id           String        @id @default(cuid())
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
   lastName     String?
   password     String
   roles        Json
   transactions Transaction[]
   updatedAt    DateTime      @updatedAt
   username     String        @unique
+}
+
+model Payment {
+  amount        Float?
+  createdAt     DateTime           @default(now())
+  currency      String?
+  id            String             @id @default(auto()) @map("_id") @db.ObjectId
+  method        EnumPaymentMethod?
+  status        EnumPaymentStatus?
+  transactionId String?
+  updatedAt     DateTime           @updatedAt
 }
 
 enum EnumPropertyTypeField {
@@ -73,5 +84,13 @@ enum EnumTransactionStatus {
 }
 
 enum EnumBookingStatus {
+  Option1
+}
+
+enum EnumPaymentMethod {
+  Option1
+}
+
+enum EnumPaymentStatus {
   Option1
 }
